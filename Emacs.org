@@ -1,4 +1,4 @@
-#+title: Emacs From Scratch Configuration
+#+Title: Emacs From Scratch Configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
 * Welcome!
@@ -567,6 +567,8 @@ The =which-key= integration adds helpful descriptions of the various keys so you
     :commands (lsp lsp-deferred)
     
     :hook ( (lsp-mode    . efs/lsp-mode-setup)
+  	  (c-mode      . lsp-deferred)
+  	  (c++-mode    . lsp-deferred)
             (kotlin-mode . lsp-deferred) )
     :init
     (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
@@ -578,9 +580,12 @@ The =which-key= integration adds helpful descriptions of the various keys so you
 
   (with-eval-after-load 'lsp-mode
     (setq lsp-kotlin-server-executable
-	  (or (getenv "KOTLIN_LS_PATH")
-	      "kotlin-language-server")))
+  	  (or (getenv "KOTLIN_LS_PATH")
+  	      "kotlin-language-server")))
 #+end_src
+
+#+RESULTS:
+: kotlin-language-server
 
 **** lsp-ui
 
@@ -596,7 +601,6 @@ The =which-key= integration adds helpful descriptions of the various keys so you
 #+end_src
 
 **** lsp-treemacs
-
 [[https://github.com/emacs-lsp/lsp-treemacs][lsp-treemacs]] provides nice tree views for different aspects of your code like symbols in a file, references of a symbol, or diagnostic messages (errors and warnings) that are found in your code.
 
 Try these commands with =M-x=:

@@ -42,7 +42,7 @@
 (dolist (mode '(org-mode-hook
                 term-mode-hook
                 shell-mode-hook
-	              treemacs-mode-hook
+	                treemacs-mode-hook
                 eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
@@ -364,8 +364,10 @@
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-
+  
   :hook ( (lsp-mode    . efs/lsp-mode-setup)
+	  (c-mode      . lsp-deferred)
+	  (c++-mode    . lsp-deferred)
           (kotlin-mode . lsp-deferred) )
   :init
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
@@ -377,8 +379,8 @@
 
 (with-eval-after-load 'lsp-mode
   (setq lsp-kotlin-server-executable
-	(or (getenv "KOTLIN_LS_PATH")
-	    "kotlin-language-server")))
+	  (or (getenv "KOTLIN_LS_PATH")
+	      "kotlin-language-server")))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -395,6 +397,16 @@
   :hook (typescript-mode . lsp-deferred)
   :config
   (setq typescript-indent-level 2))
+
+(use-package cc-mode
+  :ensure t
+  :mode (("\\.cpp\\'" . c++-mode)
+         ("\\.cc\\'"  . c++-mode)
+         ("\\.h\\'"   . c++-mode)
+         ("\\.c\\'"   . c-mode)
+         ("\\.hpp\\'" . c++-mode))
+  :hook ((c++-mode . lsp-deferred)
+	 (c-mode . lsp-deferred)))
 
 (use-package company
   :after lsp-mode
