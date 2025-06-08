@@ -442,3 +442,29 @@
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package transient
+ :ensure t
+ :defer 1
+ :init
+ (require 'transient)
+)
+
+(use-package aider
+:after transient
+:config
+;; For latest claude sonnet model
+;; (setq aider-args '("--model" "sonnet" "--no-auto-accept-architect"))
+;; (setenv "ANTHROPIC_API_KEY" anthropic-api-key)
+;; Or gemini model
+;; (setq aider-args '("--model" "gemini"))
+;; (setenv "GEMINI_API_KEY" <your-gemini-api-key>)
+;; Or chatgpt model
+;; (setq aider-args '("--model" "o4-mini"))
+;; (setenv "OPENAI_API_KEY" <your-openai-api-key>)
+;; Or use your personal config file
+(setq aider-args `("--config" ,(expand-file-name "~/.aider.conf.yml")))
+;; ;;
+;; Optional: Set a key binding for the transient menu
+(global-set-key (kbd "C-c a") 'aider-transient-menu)) ;; for wider screen
+;; or use aider-transient-menu-2cols / aider-transient-menu-1col, for narrow screen
